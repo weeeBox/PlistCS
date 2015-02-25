@@ -874,7 +874,13 @@ namespace PlistCS
             int byteCount = (int)Math.Pow(2, header & 0xf);
             byte[] buffer = objectTable.GetRange(headerPosition + 1, byteCount).ToArray();
             Array.Reverse(buffer);
-
+            
+            if (byteCount == 4)
+            {
+                return BitConverter.ToSingle(RegulateNullBytes(buffer, 4), 0);
+            }
+            
+            // TODO: check for invalid values
             return BitConverter.ToDouble(RegulateNullBytes(buffer, 8), 0);
         }
 
